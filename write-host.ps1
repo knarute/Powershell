@@ -12,3 +12,5 @@ return $Name , $Surname
 
 $K=Get-Name
 Write-NAme $K
+
+Get-Name
