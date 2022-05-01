@@ -1,0 +1,267 @@
+
+PowerShell Gallery Home
+Packages
+Publish
+Statistics
+Documentation
+Sign in
+Search PowerShell packages...
+SCCM-ProbRes 1.0.0.3
+SCCM-ProbRes.psm1
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+<#    
+ ===========================================================================
+  Created on:     10/16/2017 9:12 PM
+  Created by:     JordanTheITGuy
+  Organization:     
+  Filename:     CollectionDependencies.psm1
+ -------------------------------------------------------------------------
+  Module Name: SCCM-ProbRes
+ ===========================================================================
+#>
+
+#Import-Module (Join-Path $(Split-Path $env:SMS_ADMIN_UI_PATH) ConfigurationManager.psd1)
+#Remove the above comment if you want the module to auto attempt to load the Configuration Manager module.
+
+#Requires -Modules SQLServer , ConfigurationManager
+#If auto-load is enabled (Default) this sets the requirements and will attempt to load the required modules if they are in the PSModule Library.
+
+function Get-CollectionRelationships
+#Uses SQL Commands to connect to SCCM database and get collection include/exclue relationships. Results can be saved to a variable.
+#User can specificy the Server name and Database Name if not specified script assumes local server, and will attempt to find the DB CM_*
+{
+    [CmdletBinding()]
+    param
+    (
+        [parameter(Mandatory = $true)]
+        [string]$CollectionID,
+        [parameter(Mandatory = $false)]
+        [string]$DataBase,
+        [parameter(Mandatory = $false)]
+        [string]$Server
+    )
+    $CollectionID = "'" + $CollectionID + "'"
+    $Var = "ColID = $CollectionID"
+    If ($Server)
+    {
+        Write-Verbose "Connecting to $Server provided by user"
+    }
+    else
+    {
+        Write-Verbose "User did not proivde SQL Server to connect to assuming local server $ENV:COMPUTERNAME"
+        $Server = $ENV:COMPUTERNAME
+    }
+    If ($DataBase)
+    {
+        Write-Verbose "Connecting to $DataBase specified by user"
+    }
+    else
+    {
+        Write-Verbose -Message 'User did not provide Database Name attempting to determine'
+        If ($Server -ne $ENV:COMPUTERNAME)
+        {
+            $CMDB = Get-SqlDatabase -ServerInstance $Server -Verbose:$false | where { $_.Name -like "CM_*" } | select Name
+            $DataBase = $CMDB.Name
+            Write-Verbose "Using Remote SQL Server determined database name as $DataBase"
+        }    
+        Else
+        {
+            $CMDB = Get-SqlDatabase -ServerInstance $ENV:COMPUTERNAME -Verbose:$false | where { $_.Name -like "CM_*" } | select Name
+            $DataBase = $CMDB.Name
+            Write-Verbose "Assuming Local Server determined database name as $DataBase"
+        }
+    }
+    Write-Verbose -Message 'Executing SQL Query to collect Collection Relationships'
+    $CollectionRelationships = Invoke-Sqlcmd -query "select distinct v_Collection.name as 'CollectionName', v_Collection.Collectionid as RuleCollectionID, vSMS_CollectionDependencies.SourceCollectionID as 'SourceCollectionID', Case When vSMS_CollectionDependencies.relationshiptype = 1 then 'Limited' when vSMS_CollectionDependencies.relationshiptype = 2 then 'Include ' when vSMS_CollectionDependencies.relationshiptype = 3 then 'Exclude ' end as 'Relationship' from v_Collection join vSMS_CollectionDependencies on vSMS_CollectionDependencies.DependentCollectionID = v_Collection.CollectionID where vSMS_CollectionDependencies.SourceCollectionID = `$(ColID)" -ServerInstance $Server -Database $DataBase -Variable $Var
+    $CollectionRelationships
+}
+
+function Remove-CollectionRules
+#Accepts a PS object that is the result of Get-CollectionRelationships. Reads the object and will remove collection include/exclude dependencies.
+{
+    [CmdletBinding()]
+    param
+    (
+        [parameter(mandatory = $true)]
+        [object]$CollectionRulesToEvaluate,
+        [parameter(mandatory = $true)]
+        [string]$SiteServer
+    )
+    $CurentDir = (get-item -Path ".\" -Verbose).Fullname
+    #Gets the current directory - returns here after executing functions
+    If ($SiteServer.substring($SiteServer.Length - 1) -eq ':')
+    {
+        try
+        {
+            Write-Verbose "Mounted drive $SiteServer"
+            Set-Location $SiteServer -Verbose:$false
+            #Sets the location of the SCCM Site Server Drive
+        }
+        catch
+        {
+            Write-Verbose "Computer failed to mount the site server drive"
+        }
+    }
+    Elseif ($SiteServer.substring($SiteServer.Length - 1) -ne ':')
+    {
+        try
+        {
+            $SiteServer = $SiteServer + ":"
+            Write-Verbose "Mounted drive $SiteServer"
+            Set-Location $SiteServer -Verbose:$false
+        }
+        catch
+        {
+            Write-Verbose "Computer failed to mount the site server drive"
+        }
+    }
+    ForEach ($Item in $CollectionRulesToEvaluate)
+    {
+        If ($Item.Relationship -match 'Include')
+        {
+            $SourceCollectionID = $Item.SourceCollectionID
+            $RuleCollectionID = $Item.RuleCollectionID
+            Write-Verbose "Removing the Include rule $SourceCollectionID from the collection $RuleCollectionID"
+            Remove-CMDeviceCollectionIncludeMembershipRule -CollectionID $Item.RuleCollectionID -IncludeCollectionID $Item.SourceCollectionID -force
+            #If the $Item is an include rule, it sets variables and removes the collection rule.
+        }
+        elseif ($Item.Relationship -match 'Exclude')
+        {
+            $SourceCollectionID = $Item.SourceCollectionID
+            $RuleCollectionID = $Item.RuleCollectionID
+            Write-Verbose "Removing the Exclude rule $SourceCollectionID from the collection $RuleCollectionID"
+            Remove-CMDeviceCollectionExcludeMembershipRule -CollectionID $Item.RuleCollectionID -ExcludeCollectionID $Item.SourceCollectionID -force
+            #If the $Item is an exclude rule it sets variables and removes the collection rule.
+        }
+    }
+    Set-Location $CurentDir -Verbose:$false
+    #returns to source directory.
+}
+Contact UsTerms of UsePrivacy PolicyGallery StatusFeedbackFAQs© 2019 Microsoft Corporation

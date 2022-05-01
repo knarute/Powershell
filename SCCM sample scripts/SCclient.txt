@@ -1,0 +1,1893 @@
+
+PowerShell Gallery Home
+Packages
+Publish
+Statistics
+Documentation
+Sign in
+Search PowerShell packages...
+SCClient 2.0
+SCClient.psm1
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584
+585
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634
+635
+636
+637
+638
+639
+640
+641
+642
+643
+644
+645
+646
+647
+648
+649
+650
+651
+652
+653
+654
+655
+656
+657
+658
+659
+660
+661
+662
+663
+664
+665
+666
+667
+668
+669
+670
+671
+672
+673
+674
+675
+676
+677
+678
+679
+680
+681
+682
+683
+684
+685
+686
+687
+688
+689
+690
+691
+692
+693
+694
+695
+696
+697
+698
+699
+700
+701
+702
+703
+704
+705
+706
+707
+708
+709
+710
+711
+712
+713
+714
+715
+716
+717
+718
+719
+720
+721
+722
+723
+724
+725
+726
+727
+728
+729
+730
+731
+732
+733
+734
+735
+736
+737
+738
+739
+740
+741
+742
+743
+744
+745
+746
+747
+748
+749
+750
+751
+752
+753
+754
+755
+756
+757
+758
+759
+760
+761
+762
+763
+764
+765
+766
+767
+768
+769
+770
+771
+772
+773
+774
+775
+776
+777
+778
+779
+780
+781
+782
+783
+784
+785
+786
+787
+788
+789
+790
+791
+792
+793
+794
+795
+796
+797
+798
+799
+800
+801
+802
+803
+804
+805
+806
+807
+808
+809
+810
+811
+812
+813
+814
+815
+816
+817
+818
+819
+820
+821
+822
+823
+824
+825
+826
+827
+828
+829
+830
+831
+832
+833
+834
+835
+836
+837
+838
+839
+840
+841
+842
+843
+844
+845
+846
+847
+848
+849
+850
+851
+852
+853
+854
+855
+856
+857
+858
+859
+860
+861
+862
+863
+864
+865
+866
+867
+868
+869
+870
+871
+872
+873
+874
+875
+876
+877
+878
+879
+880
+881
+882
+883
+884
+885
+886
+887
+888
+889
+890
+891
+892
+893
+894
+895
+896
+897
+898
+899
+900
+901
+902
+903
+904
+905
+906
+907
+908
+909
+910
+911
+912
+913
+914
+915
+916
+917
+918
+919
+920
+921
+922
+923
+924
+925
+926
+927
+928
+929
+930
+931
+932
+933
+934
+935
+936
+937
+938
+939
+940
+941
+<#
+ .Synopsis
+  Get pending updates on the client.
+ 
+ .Description
+  You can use this commandlet to check the pending updates on the client.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Get-SCClientPendingUpdate
+   Get all Pending updates on the local computer.
+ 
+.Example
+   Get-SCClientPendingUpdate -UpdateID "UpdateID"
+   Get Pending updates on the local computer with a specific UpdateID.
+ 
+.Example
+   Get-SCClientPendingUpdate -ArticleID "ArticleID"
+   Get Pending updates on the local computer with a specific ArticleID.
+ 
+ .Example
+   Get-SCClientPendingUpdate -ComputerName "ClientName" -Credential "CredentialObject"
+   Get all Pending updates on the remote computer.
+ 
+.Example
+   Get-SCClientPendingUpdate -ComputerName "ClientName" -Credential "CredentialObject" -UpdateID "UpdateID"
+   Get Pending updates on the remote computer with a specific UpdateID.
+ 
+.Example
+   Get-SCClientPendingUpdate -ComputerName "ClientName" -Credential "CredentialObject" -ArticleID "ArticleID"
+   Get Pending updates on the remote computer with a specific ArticleID.
+#>
+function Get-SCClientPendingUpdate {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential]
+    [System.Management.Automation.Credential()]
+    $Credential,
+    [Parameter(Mandatory=$false)]
+    [string] $UpdateID="%",
+    [Parameter(Mandatory=$false)]
+    [string] $ArticleID="%"
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        $modulepath = $PSCommandPath.Replace("\SCClient.psm1","")
+        [xml]$XmlComplianceStates = Get-Content -Path $modulepath\ComplianceStateUpdates.xml
+        [xml]$XmlEvaluationStates = Get-Content -Path $modulepath\EvaluationStateUpdates.xml
+
+        if($ComputerName -eq "localhost")
+        {
+            $updates = Get-CimInstance -Namespace "Root\ccm\ClientSDK" -Query "SELECT * FROM CCM_SoftwareUpdate WHERE UpdateID like '$UpdateID' AND ArticleID like '$ArticleID'" -ErrorAction Stop
+        }
+        else
+        {
+            if($Credential)
+            {
+                $session = New-CimSession -Credential $Credential -ComputerName $ComputerName
+            }              
+            else
+            {
+                $session = New-CimSession -ComputerName $ComputerName
+            }
+            $updates = Get-CimInstance -Namespace "Root\ccm\ClientSDK" -Query "SELECT * FROM CCM_SoftwareUpdate WHERE UpdateID like '$UpdateID' AND ArticleID like '$ArticleID'" -CimSession $session -ErrorAction Stop
+            Remove-CimSession $session
+        }
+
+        foreach($update in $updates)
+        {
+            foreach($ComplianceState in $($XmlComplianceStates.states.option))
+            {
+                if($ComplianceState.value -eq $update.ComplianceState)
+                {
+                    $ComplianceStateProp=$ComplianceState.state
+                }
+            }  
+            foreach($EvaluationState in $($XmlEvaluationStates.states.option))
+            {
+                if($EvaluationState.value -eq $update.EvaluationState)
+                {
+                    $EvaluationStateProp=$EvaluationState.state
+                }
+            }
+
+            $props = [ordered]@{
+                Name = $update.Name;
+                ArticleID = $update.ArticleID;
+                BulletinID = $update.BulletinID;
+                UpdateID = $update.UpdateID;
+                ExclusiveUpdate = $update.ExclusiveUpdate;
+                ComplianceState = $ComplianceStateProp;
+                EvaluationState = $EvaluationStateProp;
+                PercentComplete = $update.PercentComplete;
+                MaxExecutionTime = $update.MaxExecutionTime;
+                URL = $update.URL;
+                ErrorCode = $update.ErrorCode;
+                RebootOutsideServiceWindows = $update.RebootOutsideServiceWindows;
+                StartTime = $update.RebootOutsideServiceWindows;
+                Publisher = $update.Publisher;
+                UserUIExperience = $update.UserUIExperience;
+                PSComputerName = $update.PSComputerName;     
+                PSCredential = $Credential;   
+            }
+            New-Object -property $props -TypeName psobject
+        }
+
+    }
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Get installed software on the client.
+ 
+ .Description
+  You can use this commandlet to list all installed software on the client.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Get-SCClientInstalledSoftware
+   Get all installed software on the local computer.
+ 
+ .Example
+   Get-SCClientInstalledSoftware -ComputerName "ClientName" -Credential "CredentialObject"
+   Get all installed software on the remote computer.
+#>
+function Get-SCClientInstalledSoftware {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+            $InstalledApps = Get-CimInstance -Namespace "root\cimv2\sms" -Query "select * from SMS_InstalledSoftware" -ErrorAction Stop
+        }
+        else
+        {
+            if($Credential)
+            {
+                $session  = New-CimSession -Credential $Credential -ComputerName $ComputerName
+            }
+            else
+            {
+                $session  = New-CimSession -ComputerName $ComputerName
+            }
+            $InstalledApps = Get-CimInstance -Namespace "root\cimv2\sms" -Query "select * from SMS_InstalledSoftware" -CimSession $session -ErrorAction Stop 
+            Remove-CimSession $session
+        }
+        return $InstalledApps|Select-Object ProductName,Publisher,InstalledLocation,ProductVersion,VersionMajor,VersionMinor,ServicePack,SoftwareCode,UninstallString,LocalPackage,InstallDate
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Get applications deployed to the client.
+ 
+ .Description
+  You can use this commandlet to check the applications deployed to the client.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Get-SCClientApplication
+   Get all applications deployed to the local computer.
+ 
+ .Example
+   Get-SCClientApplication -ComputerName "ClientName" -Credential "CredentialObject"
+   Get all applications deployed to the remote computer.
+#>
+function Get-SCClientApplication {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential]
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        $modulepath = $PSCommandPath.Replace("\SCClient.psm1","")
+        [xml]$XmlEvaluationStates = Get-Content -Path $modulepath\EvaluationStateApps.xml
+
+        if($ComputerName -eq "localhost")
+        {
+            $applications = Get-CimInstance -Namespace "Root\ccm\ClientSDK" -Query "SELECT * FROM CCM_application" -ErrorAction Stop
+        }
+        else
+        {
+            if($Credential)
+            {
+                $session = New-CimSession -Credential $Credential -ComputerName $ComputerName
+            }
+            else
+            {
+                $session = New-CimSession -ComputerName $ComputerName
+            }
+            $applications = Get-CimInstance -CimSession $session -Namespace "Root\ccm\ClientSDK" -Query "SELECT * FROM CCM_application" -ErrorAction Stop
+            Remove-CimSession $session
+        }
+
+        foreach($application in $applications)
+        {
+            switch($application.EnforcePreference)
+            {
+                0{$EnforcePreferenceProp="Immediate"}
+                1{$EnforcePreferenceProp="NonBusinessHours"}
+                2{$EnforcePreferenceProp="AdminSchedule"}
+                default{$EnforcePreferenceProp="Unknown"}
+            }
+            foreach($EvaluationState in $($XmlEvaluationStates.states.option))
+            {
+                if($EvaluationState.value -eq $application.EvaluationState)
+                {
+                    $EvaluationStateProp=$EvaluationState.state
+                }
+            } 
+            $props = [ordered]@{ 
+                Name = $application.Name;   
+                Publisher = $application.Publisher;
+                Id = $application.Id; 
+                InstallState = $application.InstallState; 
+                EvaluationState = $EvaluationStateProp;
+                ResolvedState = $application.ResolvedState;
+                ErrorCode = $application.ErrorCode;
+                ApplicabilityState = $application.ApplicabilityState;
+                EnforcePreference = $EnforcePreferenceProp;
+                ConfigurationState = $application.ConfigurationState;
+                PercentComplete = $application.PercentComplete;
+                AllowedActions = $application.AllowedActions;
+                IsMachineTarget = $application.IsMachineTarget;
+                IsPreflightOnly = $application.IsPreflightOnly;  
+                RebootOutsideServiceWindow = $application.RebootOutsideServiceWindow;
+                OverrideServiceWindow = $application.OverrideServiceWindow; 
+                StartTime = $application.StartTime; 
+                Deadline = $application.Deadline;
+                LastEvalTime = $application.LastEvalTime; 
+                LastInstallTime = $application.LastInstallTime;                 
+                NotifyUser = $application.NotifyUser;
+                UserUIExperience = $application.UserUIExperience;     
+            } 
+            New-Object -property $props -TypeName psobject
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Get info about last update scan.
+ 
+ .Description
+  You can use this commandlet to view details of the last update scan.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Get-SCClientUpdateScanHistory
+   Get all Pending updates on the local computer.
+ 
+ .Example
+   Get-SCClientUpdateScanHistory -ComputerName "ClientName" -Credential "CredentialObject"
+   Get all Pending updates on the remote computer.
+#>
+function Get-SCClientUpdateScanHistory {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+            $ScanHistory = Get-CimInstance -Namespace "root\ccm\scanagent" -Query "SELECT * FROM CCM_scanupdatesourcehistory" -ErrorAction Stop
+        }
+        else
+        {
+            if($Credential)
+            {
+                $session = New-CimSession -Credential $Credential -ComputerName $ComputerName
+            }
+            else
+            {
+                $session = New-CimSession -ComputerName $ComputerName
+            }
+            $ScanHistory = Get-CimInstance -CimSession $session -Namespace "root\ccm\scanagent" -Query "SELECT * FROM CCM_scanupdatesourcehistory" -ErrorAction Stop
+            Remove-CimSession $session
+        }   
+        return $ScanHistory|select-Object ScanMethod,Valid,ValidTTL,UpdateSourceID,UpdateSourceVersion,LastCompletionTime
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+<#
+ .Synopsis
+  Check for running Windows Update Scan Jobs.
+ 
+ .Description
+  You can use this commandlet to check if there are any Windows Update Scan Jobs running.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Get-SCClientScanJob
+   Get all Windows Update Scan Jobs on the local computer.
+ 
+ .Example
+   Get-SCClientScanJob -ComputerName "ClientName" -Credential "CredentialObject"
+   Get all Windows Update Scan Jobs on the remote computer.
+#>
+function Get-SCClientScanJob {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+            $ScanJob = Get-CimInstance -Namespace "root\ccm\scanagent" -Query "SELECT * FROM CCM_ScanJobInstance" -ErrorAction Stop
+        }
+        else
+        {
+            if($Credential)
+            {
+                $session = New-CimSession -Credential $Credential -ComputerName $ComputerName
+            }
+            else
+            {
+                $session = New-CimSession -ComputerName $ComputerName
+            }
+            $ScanJob = Get-CimInstance -CimSession $session -Namespace "root\ccm\scanagent" -Query "SELECT * FROM CCM_ScanJobInstance" -ErrorAction Stop
+            Remove-CimSession $session
+        }   
+        return $ScanJob|select-Object ScanUpdateSourceScanMethod,ScanUpdateSourceID,CurrentLocation,Locations,LocationTimeout,CategoryScan,RetryScan,ForcedScan,ScanState,ScanIsClientOnInternet
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Install updates
+ 
+ .Description
+  You can use this commandlet to install a specific update or all updates.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+  .Example
+   Start-SCClientInstallUpdate -UpdateID "UpdateID"
+   Install an update on the local computer
+ 
+  .Example
+   Start-SCClientInstallUpdate
+   Install all update on the local computer
+ 
+  .Example
+   Start-SCClientInstallUpdate -ComputerName "ClientName" -Credential "CredentialObject" -UpdateID "UpdateID"
+   Install an update with the specified UpdateID on the target computer
+ 
+ .Example
+   Start-SCClientInstallUpdate -ComputerName "ClientName" -Credential "CredentialObject"
+   Install all updates on the target computer
+#>
+function Start-SCClientInstallUpdate {
+param(
+    [Parameter(Mandatory=$false)]
+    [string[]] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential,
+    [Parameter(Mandatory=$false)]
+    [string] $UpdateID="%"
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+            [System.Management.ManagementObject[]] $a = get-WmiObject -query "SELECT * FROM CCM_SoftwareUpdate WHERE UpdateID like '$UpdateID'" -namespace "ROOT\ccm\ClientSDK" -ErrorAction Stop
+            ([wmiclass]'ROOT\ccm\ClientSDK:CCM_SoftwareUpdatesManager').InstallUpdates($a)
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    param ([string] $arg1 = $UpdateID)
+                    [System.Management.ManagementObject[]] $a = Get-WmiObject -query "SELECT * FROM CCM_SoftwareUpdate WHERE UpdateID like '$arg1'" -namespace "ROOT\ccm\ClientSDK" -ErrorAction Stop
+                    ([wmiclass]'ROOT\ccm\ClientSDK:CCM_SoftwareUpdatesManager').InstallUpdates($a)
+                } -ArgumentList $UpdateID -Credential $Credential
+            }
+            else
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    param ([string] $arg1 = $UpdateID)
+                    [System.Management.ManagementObject[]] $a = Get-WmiObject -query "SELECT * FROM CCM_SoftwareUpdate WHERE UpdateID like '$arg1'" -namespace "ROOT\ccm\ClientSDK" -ErrorAction Stop
+                    ([wmiclass]'ROOT\ccm\ClientSDK:CCM_SoftwareUpdatesManager').InstallUpdates($a)
+                } -ArgumentList $UpdateID
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+<#
+ .Synopsis
+  Install updates
+ 
+ .Description
+  You can use this commandlet to install a specific update or all updates.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+  .Example
+   Start-SCClientInstallApplication -Id "AppId"
+   Install an application with the specified Application Id on the local computer
+ 
+  .Example
+   Start-SCClientInstallApplication -ComputerName "ClientName" -Credential "CredentialObject" -Id "AppId"
+   Install an application with the specified Application Id on the target computer
+#>
+function Start-SCClientInstallApplication {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential,
+    [Parameter(Mandatory=$true)]
+    [string] $Id
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+            [System.Management.ManagementObject[]] $a = get-WmiObject -query "SELECT * FROM CCM_Application WHERE Id like '$Id'" -namespace "ROOT\ccm\ClientSDK" -ErrorAction Stop
+            $RELPATH = $a.__RELPATH -split ","
+            if($RELPATH[1].Contains("TRUE"))
+            {
+                $IsMachineTarget = $true
+            }
+            else
+            {
+                $IsMachineTarget = $false
+            }
+            $revision = $RELPATH[2].Substring(10)
+            $revision = $revision.Substring(0,$revision.Length-1)
+            ([wmiclass]'ROOT\ccm\ClientSdk:CCM_Application').Install($Id, $revision, $IsMachineTarget, 0, 'Normal', $False)
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    param ([string] $arg1 = $Id)
+                    [System.Management.ManagementObject[]] $a = Get-WmiObject -query "SELECT * FROM CCM_Application WHERE Id like '$arg1'" -namespace "ROOT\ccm\ClientSDK"  -ErrorAction Stop
+                    $RELPATH = $a.__RELPATH -split ","
+                    if($RELPATH[1].Contains("TRUE"))
+                    {
+                        $IsMachineTarget = $true
+                    }
+                    else
+                    {
+                        $IsMachineTarget = $false
+                    }
+                    $revision = $RELPATH[2].Substring(10)
+                    $revision = $revision.Substring(0,$revision.Length-1)
+                    ([wmiclass]'ROOT\ccm\ClientSdk:CCM_Application').Install($arg1, $revision, $IsMachineTarget, 0, 'Normal', $False)
+                } -ArgumentList $Id -Credential $Credential
+            }
+            else
+            {
+                 Invoke-Command $ComputerName -ScriptBlock{
+                    param ([string] $arg1 = $Id)
+                    [System.Management.ManagementObject[]] $a = Get-WmiObject -query "SELECT * FROM CCM_Application WHERE Id like '$arg1'" -namespace "ROOT\ccm\ClientSDK"  -ErrorAction Stop
+                    $RELPATH = $a.__RELPATH -split ","
+                    if($RELPATH[1].Contains("TRUE"))
+                    {
+                        $IsMachineTarget = $true
+                    }
+                    else
+                    {
+                        $IsMachineTarget = $false
+                    }
+                    $revision = $RELPATH[2].Substring(10)
+                    $revision = $revision.Substring(0,$revision.Length-1)
+                    ([wmiclass]'ROOT\ccm\ClientSdk:CCM_Application').Install($arg1, $revision, $IsMachineTarget, 0, 'Normal', $False)
+                } -ArgumentList $Id              
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Start a Software Updates Assignments Evaluation Cycle
+ 
+ .Description
+  You can use this commandlet to start a Software Updates Assignments Evaluation Cycle
+  or Software Update Deployment Evaluation Cycle
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Start-SCClientUpdateDeploymentEval
+   Start Software Updates Assignments Evaluation Cycle on the local computer
+ 
+ .Example
+   Start-SCClientUpdateDeploymentEval -ComputerName "ClientName" -Credential "CredentialObject"
+   Start Software Updates Assignments Evaluation Cycle on the remote computer
+#>
+function Start-SCClientUpdateDeploymentEval {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+                ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000108}')
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000108}')
+                } -Credential $Credential
+            }
+            else
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000108}')
+                }
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Start a Software Update Scan Cycle
+ 
+ .Description
+  You can use this commandlet to start a Software Update Scan Cycle
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Start-SCClientUpdateScan
+   Start Software Update Scan Cycle on the local computer
+ 
+ .Example
+   Start-SCClientUpdateScan -ComputerName "ClientName" -Credential "CredentialObject"
+   Start Software Update Scan Cycle on the remote computer
+#>
+function Start-SCClientUpdateScan {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+                ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000113}')
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000113}')
+                } -Credential $Credential
+            }
+            else
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000113}')
+                }
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Start a Machine Policy Retrieval and Evaluation Cycle.
+ 
+ .Description
+  You can use this commandlet to start a Machine Policy Retrieval and Evaluation Cycle.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Start-SCClientMachinePolicyEval
+   Start Machine Policy Retrieval and Evaluation Cycle on the local computer
+ 
+ .Example
+   Start-SCClientMachinePolicyEval -ComputerName "ClientName" -Credential "CredentialObject"
+   Start Machine Policy Retrieval and Evaluation Cycle on the remote computer
+#>
+function Start-SCClientMachinePolicyEval {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+                ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000021}')
+                ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000022}')
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000021}')
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000022}')
+                } -Credential $Credential
+            }
+            else
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000021}')
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000022}')
+                }
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+
+<#
+ .Synopsis
+  Start a Application Deployment Evaluation Cycle.
+ 
+ .Description
+  You can use this commandlet to start a Application Deployment Evaluation Cycle.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Start-SCClientApplicationEval
+   Start Application Deployment Evaluation Cycle on the local computer
+ 
+ .Example
+   Start-SCClientApplicationEval -ComputerName "ClientName" -Credential "CredentialObject"
+   Start Application Deployment Evaluation Cycle on the remote computer
+#>
+function Start-SCClientApplicationEval {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+                ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000121}')
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000121}')
+                } -Credential $Credential
+            }
+            else
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000121}')
+                }
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+<#
+ .Synopsis
+  Start a Client Repair.
+ 
+ .Description
+  You can use this commandlet to start a Client Repair.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Start-SCClientRepair
+   Repair the client on the local computer
+ 
+ .Example
+   Start-SCClientRepair -ComputerName "ClientName" -Credential "CredentialObject"
+   Repair the client on the remote computer
+#>
+function Start-SCClientRepair {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+                ([wmiclass]'ROOT\ccm:SMS_Client').RepairClient()
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').RepairClient()
+                } -Credential $Credential
+            }
+            else
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').RepairClient()
+                }
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+
+<#
+ .Synopsis
+  Reset the Machine Policy.
+ 
+ .Description
+  You can use this commandlet to reset the Client Policy.
+ 
+ .Parameter ComputerName
+  The computer you like to target.
+ 
+ .Parameter Credential
+  The credentials you like to use to manage the target computer.
+ 
+ .Example
+   Start-SCClientResetMachinePolicy
+   Reset the Machine Policy on the local computer
+ 
+ .Example
+   Start-SCClientResetMachinePolicy -ComputerName "ClientName" -Credential "CredentialObject"
+   Reset the Machine Policy on the remote computer
+#>
+function Start-SCClientResetMachinePolicy {
+param(
+    [Parameter(Mandatory=$false)]
+    [string] $ComputerName="localhost",
+    [Parameter(Mandatory=$false)]
+    [pscredential] 
+    [System.Management.Automation.Credential()]
+    $Credential
+    ) 
+
+    if($(Test-Connection -ComputerName $ComputerName -Count 1 -BufferSize 10 -Quiet))
+    {
+        if($ComputerName -eq "localhost")
+        {
+            ([wmiclass]'ROOT\ccm:SMS_Client').ResetPolicy(0)
+            ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000040}')
+            ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000021}')
+        }
+        else
+        {
+            if($Credential)
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').ResetPolicy(0)
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000040}')
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000021}')
+                } -Credential $Credential
+            }
+            else
+            {
+                Invoke-Command $ComputerName -ScriptBlock{
+                    ([wmiclass]'ROOT\ccm:SMS_Client').ResetPolicy(0)
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000040}')
+                    ([wmiclass]'ROOT\ccm:SMS_Client').TriggerSchedule('{00000000-0000-0000-0000-000000000021}')
+                }
+            }
+        }
+    }    
+    else
+    {
+        Write-Error "The computer you try to manage is offline." -Category ConnectionError
+    }
+}
+Contact UsTerms of UsePrivacy PolicyGallery StatusFeedbackFAQs© 2019 Microsoft Corporation
